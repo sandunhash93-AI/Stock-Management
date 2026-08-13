@@ -132,3 +132,47 @@ npm run dev
 ```
 
 The app runs on the Vite local URL shown in terminal (typically `http://localhost:5173`).
+
+## Android (Capacitor) Setup and APK Flow
+
+This repository is now initialized with Capacitor for Android:
+- `capacitor.config.ts` with `appId: com.stock.management` and `webDir: dist`
+- Native Android project under `/android`
+
+### One-time setup (already done in this repo)
+
+```sh
+npm install
+npm install @capacitor/core @capacitor/cli @capacitor/android
+npx cap init "Stock Management" "com.stock.management" --web-dir dist
+npx cap add android
+```
+
+### Daily Android workflow
+
+```sh
+npm run android:refresh
+npm run cap:open
+```
+
+- `android:refresh` = web build + `npx cap sync android`
+- Then run on emulator/USB device from Android Studio.
+
+### Build APK in Android Studio
+
+1. Open project via `npm run cap:open`
+2. Android Studio menu: **Build → Build Bundle(s) / APK(s) → Build APK(s)**
+3. Use generated output path to retrieve the APK.
+
+### After each code change
+
+```sh
+npm run android:refresh
+```
+
+Then rerun from Android Studio.
+
+### Troubleshooting
+
+- If `npx cap sync android` says `Could not find the web assets directory: ./dist`, run `npm run build` first.
+- If `npm run build` fails with missing `/src/main.tsx`, restore/create the app source entry before syncing Android assets.
